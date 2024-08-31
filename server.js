@@ -35,11 +35,17 @@ app.use(
 		if (c.req.path === "/favicon.ico") {
 			c.header("Cache-Control", "public, max-age=3600");
 		}
-		if (c.req.path.startsWith("/assets/")) {
-			c.header("Cache-Control", "public, max-age=31536000, immutable");
-		}
 	},
 	serveStatic({ root: mode === "development" ? "./build/client" : "./public" }),
+);
+
+app.use(
+	"/assets/*",
+	async (c, next) => {
+		await next();
+		c.header("Cache-Control", "public, max-age=31536000, immutable");
+	},
+	serveStatic({ root: "./build/client" }),
 );
 
 app.use(logger());
