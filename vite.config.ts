@@ -2,8 +2,12 @@ import type http from "node:http";
 import { getRequestListener } from "@hono/node-server";
 import { vitePlugin as remix } from "@remix-run/dev";
 import type { Hono } from "hono";
-import { defineConfig } from "vite";
-import type { Connect, ViteDevServer, Plugin as VitePlugin } from "vite";
+import {
+	type Connect,
+	type Plugin,
+	type ViteDevServer,
+	defineConfig,
+} from "vite";
 
 export default defineConfig({
 	server: { port: 3000 },
@@ -21,7 +25,7 @@ export default defineConfig({
 	],
 });
 
-function honoDevServer(): VitePlugin {
+function honoDevServer(): Plugin {
 	const entry = "./server.js";
 
 	return {
