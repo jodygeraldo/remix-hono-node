@@ -10,9 +10,7 @@ export function invariant(
 	message: string,
 	options?: ErrorOptions,
 ): asserts truthy {
-	if (truthy) {
-		return;
+	if (!truthy) {
+		throw new InvariantError(message, options);
 	}
-
-	throw new Error(message, options);
 }
