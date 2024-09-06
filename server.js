@@ -8,19 +8,10 @@ import { logger } from "hono/logger";
 const mode =
 	process.env.NODE_ENV === "production" ? "production" : "development";
 
-const viteDevServer =
-	mode === "production"
-		? undefined
-		: await import("vite").then((vite) =>
-				vite.createServer({
-					server: { middlewareMode: true, hmr: false },
-					appType: "custom",
-				}),
-			);
-
-const build = viteDevServer
-	? () => viteDevServer?.ssrLoadModule("virtual:remix/server-build")
-	: await import("./build/server/index.js");
+const build =
+	mode === "development"
+		? await import("virtual:remix/server-build")
+		: await import("./build/server/index.js");
 
 const remixHandler = createRequestHandler(build, mode);
 
